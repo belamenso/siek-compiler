@@ -24,7 +24,7 @@ def assignHomes(program: Ax86Program): Ax86Program = {
     case ARetq()          => ARetq()
   }
 
-  var stackSpace = localTypesOrdered.size * 8
+  var stackSpace: Long = localTypesOrdered.size * 8
   if 0 != stackSpace % 16 then
     stackSpace += 8
   Ax86Program(

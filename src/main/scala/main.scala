@@ -2,20 +2,15 @@ package compiler
 
 import pprint.pprintln
 
-@main def main(): Unit = {
-  val p = """(let [a 1] (let [b a] b))"""
-  val x = (uniquify(readProgram(p)))
+def compileAndRunProgram(program: String): Long =
+  val x = (uniquify(readProgram(program)))
   val x1 = removeComplexOperands(x)
   val y = explicateControl(x1)
   val y1 = selectInstructions(y)
   val z = assignHomes(y1)
   val z1 = patchInstructions(z)
+  compileAndRun(z1)
 
-  pprintln(x1)
-  println()
-  pprintln(y)
-  println()
-  pprintln(y1)
-  println()
-  pprintln(z1)
+@main def main(): Unit = {
+  println(compileAndRunProgram("""(let [a 10] (let [b 23] (+ a (- b 19))))"""))
 }

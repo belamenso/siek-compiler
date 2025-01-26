@@ -1,7 +1,7 @@
 # Siek's "Essentials of Compilation" in Scala
 
 - [X] 01. Preliminaries
-- [ ] 02. Integers and Variables
+- [X] 02. Integers and Variables
 - [ ] 03. Register Allocation
 - [ ] 04. Booleans and Conditionals
 - [ ] 05. Loops and Dataflow Analysis
@@ -16,4 +16,5 @@
 - copy the type checking tests from the reference repository
 - copy more tests from the reference repository (maybe have Claude convert them?)
 - create interpreters for all the IR stages, invoke them in tests
+- Exercises 2.9, 2.10 (improve partial evalutor pass)
 
