@@ -1,11 +1,10 @@
 package compiler
 
-trait CAtom
+trait CAtom extends CExpr
 case class CInt(value: Long) extends CAtom
 case class CVar(name: String) extends CAtom
 
 trait CExpr
-case class AtomCExpr(atom: CAtom) extends CExpr
 case class PrimCExpr(op: String, args: Seq[CAtom]) extends CExpr {
   assert(Seq("read", "+", "-").contains(op))
   if (op == "-") assert(Seq(1, 2).contains(args.length))

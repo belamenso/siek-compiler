@@ -27,7 +27,17 @@ def removeComplexOperands(prog: ProgramL): ProgramL =
       case IntL(n)    => (e, List())
       case VarL(name) => (e, List())
       case LetL(name, value, body) =>
-        (LetL(name, removeComplexOperandsExpr(value), removeComplexOperandsExpr(body)), List())
+        val newValue = removeComplexOperandsExpr(value)
+        val newBody = removeComplexOperandsExpr(body)
+
+        newBody match { // do not introduce a new let if the body is already atomic
+          case VarL(_) | IntL(_) => (newBody, List(name -> newValue))
+          case _ => {
+            val newName = ".tmp." + counter // starts with `.` so it's a reserved name
+            counter += 1
+            (VarL(newName), List(newName -> LetL(name, newValue, newBody)))
+          }
+        }
       case PrimL(op, args) =>
         val newName = ".tmp." + counter // starts with `.` so it's a reserved name
         counter += 1
