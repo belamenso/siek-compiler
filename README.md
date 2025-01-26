@@ -12,3 +12,7 @@
 - [ ] 10. Gradual Typing
 - [ ] 11. Generics
 
+### TODO
+- copy the type checking tests from the reference repository
+- copy more tests from the reference repository (maybe have Claude convert them?)
+
