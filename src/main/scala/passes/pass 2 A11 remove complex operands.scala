@@ -7,8 +7,8 @@ def removeComplexOperands(prog: ProgramL): ProgramL =
 
   def removeComplexOperandsExpr(e: LExpr): LExpr =
     e match
-      case IntL(n) => IntL(n)
-      case VarL(name) => VarL(name)
+      case IntL(n)                 => IntL(n)
+      case VarL(name)              => VarL(name)
       case LetL(name, value, body) => LetL(name, removeComplexOperandsExpr(value), removeComplexOperandsExpr(body))
       case PrimL(op, args) =>
         val (newArgs, newDefs) = args.map(removeComplexOperandsAtom).unzip
@@ -24,7 +24,7 @@ def removeComplexOperands(prog: ProgramL): ProgramL =
   /// called on things that need to become atoms
   def removeComplexOperandsAtom(e: LExpr): (LExpr, List[(String, LExpr)]) =
     e match
-      case IntL(n) => (e, List())
+      case IntL(n)    => (e, List())
       case VarL(name) => (e, List())
       case LetL(name, value, body) =>
         (LetL(name, removeComplexOperandsExpr(value), removeComplexOperandsExpr(body)), List())

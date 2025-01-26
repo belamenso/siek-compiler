@@ -5,12 +5,12 @@ type Env = Map[String, Long]
 
 trait InterpreterLInt {
   def interpExp(env: Env)(e: LExpr): Long = e match {
-    case IntL(value) => value
-    case PrimL("+", args) => args.map(interpExp(env)).sum
-    case PrimL("-", Seq(e)) => -interpExp(env)(e)
+    case IntL(value)          => value
+    case PrimL("+", args)     => args.map(interpExp(env)).sum
+    case PrimL("-", Seq(e))   => -interpExp(env)(e)
     case PrimL("-", e1 +: es) => interpExp(env)(e1) - es.map(interpExp(env)).sum
     case PrimL("read", Seq()) => scala.io.StdIn.readLine().toInt
-    case _ => throw new IllegalArgumentException(s"interpExp: $e")
+    case _                    => throw new IllegalArgumentException(s"interpExp: $e")
   }
 
   def interpretProgram(p: ProgramL): Long = interpExp(Map())(p.body)

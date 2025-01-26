@@ -13,18 +13,18 @@ object LispParser extends RegexParsers {
   }
   def expression: Parser[LExpr] = (
     integer
-    | read
-    | "(" ~> operator ~ rep1(expression) <~ ")" ^^ {
+      | read
+      | "(" ~> operator ~ rep1(expression) <~ ")" ^^ {
         case op ~ args => PrimL(op, args)
       }
-    | "(" ~> "-" ~ expression <~ ")" ^^ {
+      | "(" ~> "-" ~ expression <~ ")" ^^ {
         case "-" ~ expr => PrimL("-", Seq(expr))
       }
-    | ("(" ~> "let" ~> "[" ~> variableRef ~ expression ~ ("]" ~> expression) <~ ")") ^^ {
+      | ("(" ~> "let" ~> "[" ~> variableRef ~ expression ~ ("]" ~> expression) <~ ")") ^^ {
         case VarL(name) ~ value ~ body => LetL(name, value, body)
-        case _ => assert(false)
+        case _                         => assert(false)
       }
-    | variableRef
+      | variableRef
   )
   def program: Parser[ProgramL] = expression ^^ { expr =>
     ProgramL((), expr)
@@ -32,8 +32,8 @@ object LispParser extends RegexParsers {
   def parse(input: String): Either[String, ProgramL] = {
     parse(program, input) match {
       case Success(result, _) => Right(result)
-      case NoSuccess(msg, _) => Left(msg)
-      case _ => Left("???")
+      case NoSuccess(msg, _)  => Left(msg)
+      case _                  => Left("???")
     }
   }
 }
@@ -41,6 +41,6 @@ object LispParser extends RegexParsers {
 def readProgram(input: String): ProgramL = {
   LispParser.parse(input) match {
     case Right(program) => program
-    case Left(msg) => throw new IllegalArgumentException(msg)
+    case Left(msg)      => throw new IllegalArgumentException(msg)
   }
 }
