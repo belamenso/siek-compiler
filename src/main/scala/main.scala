@@ -1,9 +1,5 @@
 @main def main(): Unit = {
-  println(interpLint(
-    readProgram("(+ -8 10)")
-  ))
-
-  println(peLint(
-    readProgram("(+ (read) (+ 1 2 3))")
+  println(Interpreter.interpretProgram(
+    readProgram("(let [x (+ 1 1 1)] (+ x x x))")
   ))
 }

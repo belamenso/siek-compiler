@@ -2,12 +2,13 @@ import scala.util.parsing.combinator._
 
 object LispParser extends RegexParsers {
   override def skipWhitespace = true
-  def integer: Parser[AstNode] = """[-]?\d+""".r ^^ { str => IntLit(str.toLong) }
+  def integer: Parser[ExprNode] = """[-]?\d+""".r ^^ { str => IntLit(str.toLong) }
+  def variableRef: Parser[ExprNode] = """[a-zA-Z_-][a-zA-Z0-9_-]*""".r ^^ { str => Var(str) }
   def operator: Parser[String] = "+" | "-"
-  def read: Parser[AstNode] = "(read)" ^^ { _ =>
+  def read: Parser[ExprNode] = "(read)" ^^ { _ =>
     Prim("read", Seq())
   }
-  def expression: Parser[AstNode] = (
+  def expression: Parser[ExprNode] = (
     integer
     | read
     | "(" ~> operator ~ rep1(expression) <~ ")" ^^ {
@@ -16,6 +17,11 @@ object LispParser extends RegexParsers {
     | "(" ~> "-" ~ expression <~ ")" ^^ {
         case "-" ~ expr => Prim("-", Seq(expr))
       }
+    | ("(" ~> "let" ~> "[" ~> variableRef ~ expression ~ ("]" ~> expression) <~ ")") ^^ {
+        case Var(name) ~ value ~ body => Let(name, value, body)
+        case _ => assert(false)
+      }
+    | variableRef
   )
   def program: Parser[Program] = expression ^^ { expr =>
     Program((), expr)
