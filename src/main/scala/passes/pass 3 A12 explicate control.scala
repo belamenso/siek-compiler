@@ -32,5 +32,18 @@ def explicateControl(prog: ProgramL): CProgram = {
         cont
       )
 
-  CProgram(Seq(), Map("start" -> explicateControlTail(prog.body)))
+  val body = explicateControlTail(prog.body)
+  CProgram(Map("local-types" -> extractVariableNamesTail(body).map(n => (n, "long")).toMap), Map("start" -> body))
 }
+
+private def extractVariableNamesTail(e: CTail): Set[String] = e match
+  case ReturnCTail(expr)    => extractVariableNamesExpr(expr)
+  case SeqCTail(stmt, tail) => extractVariableNamesStmt(stmt) ++ extractVariableNamesTail(tail)
+
+private def extractVariableNamesExpr(e: CExpr): Set[String] = e match
+  case CInt(_)            => Set()
+  case CVar(name)         => Set(name)
+  case PrimCExpr(_, args) => args.flatMap(extractVariableNamesExpr).toSet
+
+private def extractVariableNamesStmt(e: CStmt): Set[String] = e match
+  case AssignCStmt(name, expr) => Set(name) ++ extractVariableNamesExpr(expr)

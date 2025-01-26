@@ -21,4 +21,6 @@ case class AJmp(label: String) extends AsmInstr
 case class ARetq() extends AsmInstr
 
 case class ABlock(info: Seq[Nothing], body: Seq[AsmInstr])
-case class Ax86Program(info: Seq[Nothing], blocks: Map[String, ABlock])
+case class Ax86Program(info: Map[String, Any], blocks: Map[String, ABlock]) {
+  def butWithNoInfo: Ax86Program = Ax86Program(Map(), blocks)
+}

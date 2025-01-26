@@ -3,9 +3,9 @@ import compiler._
 class SelectInstructions extends munit.FunSuite {
   test("select instructions 1") {
     assertEquals(
-      selectInstructions(explicateControl(removeComplexOperands(uniquify(readProgram("""(let [y (read)] y)"""))))),
+      selectInstructions(explicateControl(removeComplexOperands(uniquify(readProgram("""(let [y (read)] y)"""))))).butWithNoInfo,
       Ax86Program(
-        info = List(),
+        info = Map(),
         blocks = Map(
           "start" -> ABlock(
             info = List(),
@@ -23,9 +23,11 @@ class SelectInstructions extends munit.FunSuite {
 
   test("select instructions 2") {
     assertEquals(
-      selectInstructions(explicateControl(removeComplexOperands(uniquify(readProgram("""(let [x (+ 42 (- 10))] (+ x 10))"""))))),
+      selectInstructions(
+        explicateControl(removeComplexOperands(uniquify(readProgram("""(let [x (+ 42 (- 10))] (+ x 10))"""))))
+      ).butWithNoInfo,
       Ax86Program(
-        info = List(),
+        info = Map(),
         blocks = Map(
           "start" -> ABlock(
             info = List(),
@@ -44,11 +46,13 @@ class SelectInstructions extends munit.FunSuite {
     )
   }
 
-    test("select instructions 3") {
+  test("select instructions 3") {
     assertEquals(
-      selectInstructions(explicateControl(removeComplexOperands(uniquify(readProgram("""(let [y (let [x 20] (+ x (let [x 22] x)))] y)"""))))),
+      selectInstructions(explicateControl(
+        removeComplexOperands(uniquify(readProgram("""(let [y (let [x 20] (+ x (let [x 22] x)))] y)""")))
+      )).butWithNoInfo,
       Ax86Program(
-        info = List(),
+        info = Map(),
         blocks = Map(
           "start" -> ABlock(
             info = List(),

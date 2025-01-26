@@ -19,4 +19,6 @@ trait CTail
 case class ReturnCTail(expr: CExpr) extends CTail
 case class SeqCTail(stmt: CStmt, tail: CTail) extends CTail
 
-case class CProgram(info: Seq[Nothing], body: Map[String, CTail])
+case class CProgram(info: Map[String, Any], body: Map[String, CTail]) {
+  def butWithNoInfo: CProgram = CProgram(Map(), body)
+}

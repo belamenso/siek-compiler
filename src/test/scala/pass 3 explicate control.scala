@@ -5,9 +5,9 @@ class ExplicateControl extends munit.FunSuite {
     assertEquals(
       explicateControl(
         removeComplexOperands(uniquify(readProgram("""(let [y (let [x 20] (+ x (let [x 22] x)))] y)""")))
-      ),
+      ).butWithNoInfo,
       CProgram(
-        info = List(),
+        info = Map(),
         body = Map(
           "start" -> SeqCTail(
             stmt = AssignCStmt(name = "x.2", expr = CInt(value = 20L)),
@@ -33,9 +33,9 @@ class ExplicateControl extends munit.FunSuite {
         """(let [x 10]
             (let [y (+ x (+ x 5))]
               y))"""
-      )))),
+      )))).butWithNoInfo,
       CProgram(
-        info = List(),
+        info = Map(),
         body = Map(
           "start" -> SeqCTail(
             stmt = AssignCStmt(name = "x.1", expr = CInt(value = 10L)),
@@ -65,9 +65,9 @@ class ExplicateControl extends munit.FunSuite {
             (let [y 2]
               (let [z (+ x y)]
                 z)))"""
-      )))),
+      )))).butWithNoInfo,
       CProgram(
-        info = List(),
+        info = Map(),
         body = Map(
           "start" -> SeqCTail(
             stmt = AssignCStmt(name = "x.1", expr = CInt(value = 1L)),
