@@ -1,3 +1,5 @@
+package compiler
+
 def peNeg(r: LExpr): LExpr = r match {
   case IntL(value) => IntL(-value)
   case _ => PrimL("-", Seq(r))

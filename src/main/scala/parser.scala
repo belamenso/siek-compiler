@@ -1,3 +1,5 @@
+package compiler
+
 import scala.util.parsing.combinator._
 
 object LispParser extends RegexParsers {

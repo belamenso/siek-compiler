@@ -1,3 +1,5 @@
+import compiler._
+
 class PartialInterpretation extends munit.FunSuite {
 
   test("partial interpretation") {

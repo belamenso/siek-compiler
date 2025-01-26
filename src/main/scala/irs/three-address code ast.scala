@@ -1,3 +1,5 @@
+package compiler
+
 trait CAtom
 case class CInt(value: Long) extends CAtom
 case class CVar(name: String) extends CAtom

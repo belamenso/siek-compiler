@@ -1,3 +1,5 @@
+package compiler
+
 trait LExpr
 case class IntL (value: Long) extends LExpr
 case class PrimL (op: String, args: Seq[LExpr]) extends LExpr {

@@ -1,3 +1,5 @@
+import compiler._
+
 class PassUniquify extends munit.FunSuite {
 
   def testPass(programPre: String, programPost: String): Unit =

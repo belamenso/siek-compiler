@@ -1,3 +1,5 @@
+package compiler
+
 def uniquify(prog: ProgramL): ProgramL = {
   var counter = 1
 

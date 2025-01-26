@@ -1,3 +1,5 @@
+package compiler
+
 val Interpreter = new InterpreterLVar {}
 type Env = Map[String, Long]
 
