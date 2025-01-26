@@ -7,8 +7,11 @@ import pprint.pprintln
   val x = (uniquify(readProgram(p)))
   val x1 = removeComplexOperands(x)
   val y = explicateControl(x1)
+  val y1 = selectInstructions(y)
 
   pprintln(x1)
   println()
   pprintln(y)
+  println()
+  pprintln(y1)
 }

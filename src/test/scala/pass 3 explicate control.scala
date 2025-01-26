@@ -3,7 +3,9 @@ import compiler._
 class ExplicateControl extends munit.FunSuite {
   test("explicate control 1") {
     assertEquals(
-      explicateControl(removeComplexOperands(uniquify(readProgram("""(let [y (let [x 20] (+ x (let [x 22] x)))] y)""")))),
+      explicateControl(
+        removeComplexOperands(uniquify(readProgram("""(let [y (let [x 20] (+ x (let [x 22] x)))] y)""")))
+      ),
       CProgram(
         info = List(),
         body = Map(
@@ -30,7 +32,8 @@ class ExplicateControl extends munit.FunSuite {
       explicateControl(removeComplexOperands(uniquify(readProgram(
         """(let [x 10]
             (let [y (+ x (+ x 5))]
-              y))""")))),
+              y))"""
+      )))),
       CProgram(
         info = List(),
         body = Map(
@@ -61,7 +64,8 @@ class ExplicateControl extends munit.FunSuite {
         """(let [x 1]
             (let [y 2]
               (let [z (+ x y)]
-                z)))""")))),
+                z)))"""
+      )))),
       CProgram(
         info = List(),
         body = Map(

@@ -1,7 +1,5 @@
 package compiler
 
-import scala.compiletime.ops.double
-
 def removeComplexOperands(prog: ProgramL): ProgramL =
   var counter = 1
 
