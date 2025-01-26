@@ -1,5 +1,7 @@
+import pprint.pprintln
+
 @main def main(): Unit = {
-  println(Interpreter.interpretProgram(
-    readProgram("(let [x (+ 1 1)] (+ x x))")
+  pprintln(uniquify(
+    readProgram("(let [x (+ 1 1)] (+ (let [x 12] x) x))")
   ))
 }

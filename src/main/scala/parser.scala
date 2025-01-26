@@ -3,7 +3,7 @@ import scala.util.parsing.combinator._
 object LispParser extends RegexParsers {
   override def skipWhitespace = true
   def integer: Parser[LExpr] = """[-]?\d+""".r ^^ { str => IntL(str.toLong) }
-  def variableRef: Parser[LExpr] = """[a-zA-Z_-][a-zA-Z0-9_-]*""".r ^^ { str => VarL(str) }
+  def variableRef: Parser[LExpr] = """[\.a-zA-Z_-][\.a-zA-Z0-9_-]*""".r ^^ { str => VarL(str) }
   def operator: Parser[String] = "+" | "-"
   def read: Parser[LExpr] = "(read)" ^^ { _ =>
     PrimL("read", Seq())

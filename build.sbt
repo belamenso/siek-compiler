@@ -10,6 +10,7 @@ lazy val root = project
 
     libraryDependencies ++= Seq(
       "org.scalameta" %% "munit" % "1.0.0" % Test,
-      "org.scala-lang.modules" %% "scala-parser-combinators" % "2.4.0"
+      "org.scala-lang.modules" %% "scala-parser-combinators" % "2.4.0",
+      "com.lihaoyi" %% "pprint" % "0.9.0",
     )
   )
