@@ -5,6 +5,7 @@ import scala.util.parsing.combinator._
 object LispParser extends RegexParsers {
   override def skipWhitespace = true
   def integer: Parser[LExpr] = """[-]?\d+""".r ^^ { str => IntL(str.toLong) }
+  // variable cannot start with `.`, that's reserved for internal names
   def variableRef: Parser[LExpr] = """[\.a-zA-Z_-][\.a-zA-Z0-9_-]*""".r ^^ { str => VarL(str) }
   def operator: Parser[String] = "+" | "-"
   def read: Parser[LExpr] = "(read)" ^^ { _ =>

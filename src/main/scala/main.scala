@@ -3,7 +3,7 @@ package compiler
 import pprint.pprintln
 
 @main def main(): Unit = {
-  pprintln((uniquify(
-    readProgram("(let [x (+ 1 1)] (+ (let [x 12] x) x))")
-  )))
+  pprintln(removeComplexOperands(
+    readProgram("(let [x (+ 42 (- 10))] (+ x 10))")
+  ))
 }
