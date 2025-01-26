@@ -15,4 +15,5 @@
 ### TODO
 - copy the type checking tests from the reference repository
 - copy more tests from the reference repository (maybe have Claude convert them?)
+- create interpreters for all the IR stages, invoke them in tests
 
