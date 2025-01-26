@@ -1,0 +1,44 @@
+q in asm instructions means they operate on quads -> 64bs
+asm instructions take arguments in order of source, then destination
+gcc assembly.s -o exec
+
+rax (64-bit) - full register
+eax (32-bit) - lower half
+ax  (16-bit) - lower quarter
+al  (8-bit)  - lowest byte
+
+rax - return value
+rdi - 1st argument
+rsi - 2nd argument
+rdx - 3rd argument
+rcx - 4th argument
+r8  - 5th argument
+r9  - 6th argument
+rsp - stack pointer (must be maintained)
+
+Instruction suffix (q suffix):
+
+
+AT&T syntax convention for operators:
+  q stands for "quad word" (64-bit)
+  b (byte, 8-bit)
+  w (word, 16-bit)
+  l (long, 32-bit)
+(different convention from Intel's)
+
+stack grows down, heap grows up
+
+rbp (base pointer): Stable reference point for the current function's frame
+  Used to access local variables with fixed offsets
+  Doesn't change during function execution
+  Like a "bookmark" for the start of current function's data
+rsp (stack pointer): Dynamic top of stack
+  Changes as things are pushed/popped
+  Moves up and down during function execution
+  Points to the current "working area"
+Common function prologue:
+  push rbp          # save old base pointer
+  mov rbp, rsp      # establish new base pointer
+  sub rsp, N        # allocate N bytes for local vars
+
+rsp still points at valid data (the last thing pushed), not one cell below that
