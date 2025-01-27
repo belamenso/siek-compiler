@@ -12,5 +12,5 @@ def compileAndRunProgram(program: String): Long =
   compileAndRun(z1)
 
 @main def main(): Unit = {
-  println(compileAndRunProgram("""(let [a 10] (let [b 23] (+ a (- b 19))))"""))
+  println(compileAndRunProgram("""(let [a 5] (let [b 30] (let [c a] (let [b 10] (+ b c)))))"""))
 }

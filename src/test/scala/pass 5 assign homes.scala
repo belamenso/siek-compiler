@@ -13,7 +13,7 @@ class AssignHomes extends munit.FunSuite {
       info = Map("local-types" -> Map("a.1" -> "long", "b.2" -> "long"), "stack-space" -> 16),
       blocks = Map(
         "start" -> ABlock(
-          info = List(),
+          info = Map(),
           body = List(
             AMovq(src = ImmAsmArg(value = 42L), dst = DerefAsmArg(reg = AReg.RBP, offset = -8L)),
             AMovq(

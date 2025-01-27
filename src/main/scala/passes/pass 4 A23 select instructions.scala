@@ -41,6 +41,6 @@ def selectInstructions(program: CProgram): Ax86Program = {
 
   Ax86Program(
     program.info,
-    program.body.map { case (name, block) => (name, ABlock(List(), selectInstructionsTail(block))) }
+    program.body.map { case (name, block) => (name, ABlock(Map(), selectInstructionsTail(block))) }
   )
 }

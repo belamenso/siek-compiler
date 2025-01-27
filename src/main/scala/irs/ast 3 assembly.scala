@@ -16,11 +16,11 @@ case class AMovq(src: AsmArg, dst: AsmArg) extends AsmInstr
 case class ANegq(dst: AsmArg) extends AsmInstr
 case class APushq(src: AsmArg) extends AsmInstr
 case class APopq(dst: AsmArg) extends AsmInstr
-case class ACallq(label: String, v: Long) extends AsmInstr
+case class ACallq(label: String, arity: Int) extends AsmInstr { assert(0 <= arity && arity <= 6) }
 case class AJmp(label: String) extends AsmInstr
 case class ARetq() extends AsmInstr
 
-case class ABlock(info: Seq[Nothing], body: Seq[AsmInstr])
+case class ABlock(info: Map[String, Any], body: Seq[AsmInstr])
 case class Ax86Program(info: Map[String, Any], blocks: Map[String, ABlock]) {
   def butWithNoInfo: Ax86Program = Ax86Program(Map(), blocks)
 }

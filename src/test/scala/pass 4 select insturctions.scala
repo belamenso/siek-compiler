@@ -8,9 +8,9 @@ class SelectInstructions extends munit.FunSuite {
         info = Map(),
         blocks = Map(
           "start" -> ABlock(
-            info = List(),
+            info = Map(),
             body = List(
-              ACallq(label = "read_int", v = 0L),
+              ACallq(label = "read_int", arity = 0),
               AMovq(src = RegAsmArg(reg = AReg.RAX), dst = VarAsmArg(name = "y.1")),
               AMovq(src = VarAsmArg(name = "y.1"), dst = RegAsmArg(reg = AReg.RAX)),
               AJmp(label = "conclusion")
@@ -30,7 +30,7 @@ class SelectInstructions extends munit.FunSuite {
         info = Map(),
         blocks = Map(
           "start" -> ABlock(
-            info = List(),
+            info = Map(),
             body = List(
               AMovq(src = ImmAsmArg(value = 10L), dst = VarAsmArg(name = ".tmp.1")),
               ANegq(dst = VarAsmArg(name = ".tmp.1")),
@@ -55,7 +55,7 @@ class SelectInstructions extends munit.FunSuite {
         info = Map(),
         blocks = Map(
           "start" -> ABlock(
-            info = List(),
+            info = Map(),
             body = List(
               AMovq(src = ImmAsmArg(value = 20L), dst = VarAsmArg(name = "x.2")),
               AMovq(src = ImmAsmArg(value = 22L), dst = VarAsmArg(name = "x.3")),
