@@ -29,10 +29,10 @@ def buildInterference(program: Ax86Program): Ax86Program = {
   for ((instr, liveAfter) <- onlyBlock.body.zip(liveAfterSets)) do
     instr match {
       case AMovq(src, dst) =>
-        for (v <- liveAfter ; if v != src && v != dst) do
+        for (v <- liveAfter; if v != src && v != dst) do
           graph.addEdge(dst, v)
       case _ =>
-        for (d <- instr.writtenLocations ; v <- liveAfter ; if v != d) do
+        for (d <- instr.writtenLocations; v <- liveAfter; if v != d) do
           graph.addEdge(d, v)
     }
 
@@ -40,5 +40,6 @@ def buildInterference(program: Ax86Program): Ax86Program = {
 
   Ax86Program(
     program.info + ("conflicts" -> graph),
-    program.blocks)
+    program.blocks
+  )
 }

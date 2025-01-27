@@ -27,4 +27,6 @@ class PatchInstructions extends munit.FunSuite {
 
     assertEquals(z, expected)
   }
+
+  // TODO add tests for eliminating trivial moves
 }

@@ -3,20 +3,26 @@ import AReg._
 
 class BuildInterference extends munit.FunSuite {
   test("3.8") {
-    val prog = Ax86Program(Map(), Map("start" -> ABlock(Map(), Seq(
-      AMovq(ImmAsmArg(1), VarAsmArg("v")),
-      AMovq(ImmAsmArg(42), VarAsmArg("w")),
-      AMovq(VarAsmArg("v"), VarAsmArg("x")),
-      AAddq(ImmAsmArg(7), VarAsmArg("x")),
-      AMovq(VarAsmArg("x"), VarAsmArg("y")),
-      AMovq(VarAsmArg("x"), VarAsmArg("z")),
-      AAddq(VarAsmArg("w"), VarAsmArg("z")),
-      AMovq(VarAsmArg("y"), VarAsmArg("t")),
-      ANegq(VarAsmArg("t")),
-      AMovq(VarAsmArg("z"), RegAsmArg(AReg.RAX)),
-      AAddq(VarAsmArg("t"), RegAsmArg(AReg.RAX)),
-      AJmp("conclusion")
-    ))))
+    val prog = Ax86Program(
+      Map(),
+      Map("start" -> ABlock(
+        Map(),
+        Seq(
+          AMovq(ImmAsmArg(1), VarAsmArg("v")),
+          AMovq(ImmAsmArg(42), VarAsmArg("w")),
+          AMovq(VarAsmArg("v"), VarAsmArg("x")),
+          AAddq(ImmAsmArg(7), VarAsmArg("x")),
+          AMovq(VarAsmArg("x"), VarAsmArg("y")),
+          AMovq(VarAsmArg("x"), VarAsmArg("z")),
+          AAddq(VarAsmArg("w"), VarAsmArg("z")),
+          AMovq(VarAsmArg("y"), VarAsmArg("t")),
+          ANegq(VarAsmArg("t")),
+          AMovq(VarAsmArg("z"), RegAsmArg(AReg.RAX)),
+          AAddq(VarAsmArg("t"), RegAsmArg(AReg.RAX)),
+          AJmp("conclusion")
+        )
+      ))
+    )
 
     val expected = Map(
       RegAsmArg(reg = RAX) -> Set(RegAsmArg(reg = RSP), VarAsmArg(name = "t")),
@@ -48,6 +54,9 @@ class BuildInterference extends munit.FunSuite {
       )
     )
 
-    assertEquals(buildInterference(uncoverLive(prog)).info("conflicts").asInstanceOf[UndirectedGraph[AsmArg]].edges, expected)
+    assertEquals(
+      buildInterference(uncoverLive(prog)).info("conflicts").asInstanceOf[UndirectedGraph[AsmArg]].edges,
+      expected
+    )
   }
 }
