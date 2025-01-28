@@ -24,11 +24,8 @@ def assignHomes(program: Ax86Program): Ax86Program = {
     case ARetq()          => ARetq()
   }
 
-  var stackSpace: Long = localTypesOrdered.size * 8
-  if 0 != stackSpace % 16 then
-    stackSpace += 8
   Ax86Program(
-    program.info + ("stack-space" -> stackSpace),
+    program.info ++ Map("spilled-fields" -> localTypesOrdered.size, "used-callee" -> Set[AReg]()),
     program.blocks.map((n, block) => (n -> ABlock(block.info, block.body.map(assignHomesInInstr))))
   )
 }

@@ -10,7 +10,11 @@ class AssignHomes extends munit.FunSuite {
     val z = assignHomes(y1)
 
     val expected = Ax86Program(
-      info = Map("local-types" -> Map("a.1" -> "long", "b.2" -> "long"), "stack-space" -> 16),
+      info = Map(
+        "local-types" -> Map("a.1" -> "long", "b.2" -> "long"),
+        "used-callee" -> Set[AReg](),
+        "spilled-fields" -> 2
+      ),
       blocks = Map(
         "start" -> ABlock(
           info = Map(),

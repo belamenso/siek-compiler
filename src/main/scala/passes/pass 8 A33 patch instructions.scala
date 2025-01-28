@@ -11,13 +11,16 @@ def patchInstructions(program: Ax86Program): Ax86Program = {
     case _ => Seq(i)
   }
 
-  extension (i: AsmInstr) def isMoveTrivial: Boolean = i match {
-    case AMovq(a, b) if a == b => true
-    case _ => false
-  }
+  extension (i: AsmInstr)
+    def isMoveTrivial: Boolean = i match {
+      case AMovq(a, b) if a == b => true
+      case _                     => false
+    }
 
   Ax86Program(
     program.info,
-    program.blocks.map((n, block) => (n -> ABlock(block.info, block.body.flatMap(assignHomesInInstr).filter(!_.isMoveTrivial))))
+    program.blocks.map((n, block) =>
+      (n -> ABlock(block.info, block.body.flatMap(assignHomesInInstr).filter(!_.isMoveTrivial)))
+    )
   )
 }

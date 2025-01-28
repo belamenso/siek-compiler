@@ -36,8 +36,6 @@ def buildInterference(program: Ax86Program): Ax86Program = {
           graph.addEdge(d, v)
     }
 
-  pprint.pprintln(graph.edges)
-
   Ax86Program(
     program.info + ("conflicts" -> graph),
     program.blocks

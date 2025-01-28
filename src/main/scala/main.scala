@@ -7,9 +7,11 @@ def compileAndRunProgram(program: String): Long =
   val x1 = removeComplexOperands(x)
   val y = explicateControl(x1)
   val y1 = selectInstructions(y)
-  val z = assignHomes(y1)
+  val z = allocateRegisters(buildInterference(uncoverLive(y1)))
   val z1 = patchInstructions(z)
   compileAndRun(z1)
+
+////////////////////////
 
 def helper(program: String): Any =
   val x = (uniquify(readProgram(program)))
@@ -18,7 +20,7 @@ def helper(program: String): Any =
   val y1 = selectInstructions(y)
   val xxx = uncoverLive(y1)
   val xxx1 = buildInterference(xxx)
-  xxx1
+  allocateRegisters(xxx1)
 
 @main def main(): Unit = {
   pprintln(helper("""(let [a 5] (let [b 30] (let [c a] (let [b 10] (+ b c)))))"""))

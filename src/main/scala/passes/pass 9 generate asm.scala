@@ -14,17 +14,27 @@ def compileAndRun(program: Ax86Program): Long =
   process2.waitFor()
   process2.exitValue()
 
-private def conclusion(stackSpace: Long) = """
+private def conclusion(calleeSavedRegs: Set[AReg], spilledFields: Int) =
+  assert(0 <= spilledFields)
+  var frameSpaceNeeded = (calleeSavedRegs.size + spilledFields) * 8
+  if 0 != (frameSpaceNeeded % 16) then
+    frameSpaceNeeded += 8
+  frameSpaceNeeded -= 8 * calleeSavedRegs.size
+
+  def newLinesIfNonEmpty(s: String) = if s.isEmpty then "\n" else f"\n$s\n"
+
+  val pushedRegs = calleeSavedRegs.toList.map(r => f"  pushq ${r.str}").mkString("\n")
+  val poppedRegs = calleeSavedRegs.toList.reverse.map(r => f"  popq ${r.str}").mkString("\n")
+
+  """
   .globl main
 main:
-  pushq %rbp
-  movq %rsp, %rbp
-  subq $""" + stackSpace + """, %rsp
+  pushq %rbp""" + newLinesIfNonEmpty(pushedRegs) + """  movq %rsp, %rbp
+  subq $""" + frameSpaceNeeded + """, %rsp
   jmp start
 
 conclusion:
-  addq $""" + stackSpace + """, %rsp
-  popq %rbp
+  addq $""" + frameSpaceNeeded + """, %rsp""" + newLinesIfNonEmpty(poppedRegs) + """  popq %rbp
   retq
 """
 
@@ -38,8 +48,8 @@ extension (a: AReg)
     case AReg.RSP => "%rsp"
     case AReg.RSI => "%rsi"
     case AReg.RDI => "%rdi"
-    case AReg.R8 => "%r8"
-    case AReg.R9 => "%r9"
+    case AReg.R8  => "%r8"
+    case AReg.R9  => "%r9"
     case AReg.R10 => "%r10"
     case AReg.R11 => "%r11"
     case AReg.R12 => "%r12"
@@ -50,23 +60,23 @@ extension (a: AReg)
 
 extension (a: AsmArg)
   def str: String = a match {
-    case ImmAsmArg(value) => "$" + value
-    case RegAsmArg(reg) => reg.str
+    case ImmAsmArg(value)         => "$" + value
+    case RegAsmArg(reg)           => reg.str
     case DerefAsmArg(reg, offset) => s"$offset(${reg.str})"
-    case VarAsmArg(name) => assert(false, "VarAsmArg should have been replaced by now")
+    case VarAsmArg(name)          => assert(false, "VarAsmArg should have been replaced by now")
   }
 
 extension (i: AsmInstr)
   def str: String = i match {
-    case AAddq(src, dst) => s"addq ${src.str}, ${dst.str}"
-    case ASubq(src, dst) => s"subq ${src.str}, ${dst.str}"
-    case AMovq(src, dst) => s"movq ${src.str}, ${dst.str}"
-    case ANegq(dst) => s"negq ${dst.str}"
-    case APushq(src) => s"pushq ${src.str}"
-    case APopq(dst) => s"popq ${dst.str}"
+    case AAddq(src, dst)  => s"addq ${src.str}, ${dst.str}"
+    case ASubq(src, dst)  => s"subq ${src.str}, ${dst.str}"
+    case AMovq(src, dst)  => s"movq ${src.str}, ${dst.str}"
+    case ANegq(dst)       => s"negq ${dst.str}"
+    case APushq(src)      => s"pushq ${src.str}"
+    case APopq(dst)       => s"popq ${dst.str}"
     case ACallq(label, v) => s"callq $label"
-    case AJmp(label) => s"jmp $label"
-    case ARetq() => "retq"
+    case AJmp(label)      => s"jmp $label"
+    case ARetq()          => "retq"
   }
 
 extension (b: ABlock)
@@ -75,5 +85,5 @@ extension (b: ABlock)
 extension (p: Ax86Program)
   def str: String = {
     val blocks = p.blocks.map { case (name, block) => s"$name:\n${block.str}" }.mkString("\n")
-    s"$blocks\n${conclusion(p.info("stack-space").asInstanceOf[Long])}"
+    s"$blocks\n${conclusion(p.info("used-callee").asInstanceOf[Set[AReg]], p.info("spilled-fields").asInstanceOf[Int])}"
   }

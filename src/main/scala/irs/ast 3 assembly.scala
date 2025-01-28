@@ -20,7 +20,9 @@ case class ACallq(label: String, arity: Int) extends AsmInstr { assert(0 <= arit
 case class AJmp(label: String) extends AsmInstr
 case class ARetq() extends AsmInstr
 
-case class ABlock(info: Map[String, Any], body: Seq[AsmInstr])
+case class ABlock(info: Map[String, Any], body: Seq[AsmInstr]) {
+  def butWithNoInfo: ABlock = ABlock(Map(), body)
+}
 case class Ax86Program(info: Map[String, Any], blocks: Map[String, ABlock]) {
   def butWithNoInfo: Ax86Program = Ax86Program(Map(), blocks)
 }
